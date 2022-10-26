@@ -111,6 +111,7 @@ function ProfileView(props) {
                 favoriteMovies={favoriteMovies}
                 thisUser={thisUser}
                 token={token}
+                setFavoriteMovies={setFavoriteMovies}
               />
             </Card.Body>
           </Card>

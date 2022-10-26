@@ -7,7 +7,7 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 export function FavoriteMoviesView(props) {
-  const { movies, favoriteMovies, thisUser, token } = props;
+  const { movies, favoriteMovies, thisUser, token, setFavoriteMovies } = props;
 
   const favoriteMoviesList = movies.filter((m) => {
     return favoriteMovies.includes(m._id);
@@ -32,8 +32,8 @@ export function FavoriteMoviesView(props) {
         }
       )
       .then(() => {
-        window.location.reload();
-        // window.open('/users/' + thisUser, '_self');
+        // setFavoriteMovies();
+        window.open('/users/' + thisUser, '_self');
       })
       .catch((error) => console.error(error));
 

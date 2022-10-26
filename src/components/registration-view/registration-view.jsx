@@ -24,13 +24,10 @@ function RegistrationView(props) {
       setNameErr('Name is Required');
       isReq = false;
     } else if (name.length < 5) {
-      setNameErr('Enter your full name');
+      setNameErr('Name must be at least 5 characters long');
       isReq = false;
-    } else if (!username) {
+    } else if (username.length < 1) {
       setUsernameErr('Username required');
-      isReq = false;
-    } else if (username.length < 2) {
-      setUsernameErr('Username must be 2 characters long');
       isReq = false;
     }
     if (!password) {
@@ -47,18 +44,20 @@ function RegistrationView(props) {
     return isReq;
   };
 
+  const notify = () =>
+    toast.success('Registration successful.Please Log in!', {
+      position: 'top-center',
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    const notify = () =>
-      toast.success('Registration successful.Please Log in!', {
-        position: 'top-center',
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
+
     const isReq = validate();
     if (isReq) {
       axios
@@ -71,8 +70,15 @@ function RegistrationView(props) {
         })
         .then((response) => {
           const data = response.data;
+          notify();
           console.log(data);
-          window.open('/', '_self');
+          setName('');
+          setUsername('');
+          setPassword('');
+          setEmail('');
+          setBirthday('');
+
+          // window.open('/', '_self');
           // props.onRegistration(data); //Check this
         })
         .catch((response) => {
@@ -81,7 +87,6 @@ function RegistrationView(props) {
 
       console.log(name, username, password, email, birthday);
     }
-    return notify();
   };
 
   return (
@@ -98,7 +103,7 @@ function RegistrationView(props) {
                   onChange={(e) => setName(e.target.value)}
                   placeholder="Your Full Name"
                 />
-                {nameErr && <p>{nameErr}</p>}
+                {nameErr && <p className="error_msg">{nameErr}</p>}
               </Form.Group>
 
               <Form.Group controlId="formUsername">
@@ -109,7 +114,7 @@ function RegistrationView(props) {
                   onChange={(e) => setUsername(e.target.value)}
                   placeholder="Your username"
                 />
-                {usernameErr && <p>{usernameErr}</p>}
+                {usernameErr && <p className="error_msg">{usernameErr}</p>}
               </Form.Group>
 
               <Form.Group controlId="formPassword">
@@ -120,7 +125,7 @@ function RegistrationView(props) {
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="Your password"
                 />
-                {passwordErr && <p>{passwordErr}</p>}
+                {passwordErr && <p className="error_msg">{passwordErr}</p>}
               </Form.Group>
 
               <Form.Group controlId="formPassword">
@@ -131,7 +136,7 @@ function RegistrationView(props) {
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="Your email"
                 />
-                {emailErr && <p>{emailErr}</p>}
+                {emailErr && <p className="error_msg">{emailErr}</p>}
               </Form.Group>
 
               <Form.Group controlId="formBirthday">

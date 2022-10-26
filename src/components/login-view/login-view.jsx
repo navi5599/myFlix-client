@@ -35,19 +35,35 @@ function LoginView(props) {
     return isReq;
   };
 
+  // Toast notifiers
+
+  const loggedNotify = () =>
+    toast.success('Logged in!', {
+      position: 'top-left',
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
+
+  const loggingNotify = () =>
+    toast.info('Logging you in ..', {
+      position: 'top-left',
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
+
   const handleSubmit = (e) => {
     e.preventDefault();
     const isReq = validate();
-    const notify = () =>
-      toast.info('Logging you in..', {
-        position: 'top-left',
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
+    loggingNotify();
+
     if (isReq) {
       axios
         .post('https://my-flix-app-1910.herokuapp.com/login', {
@@ -58,12 +74,12 @@ function LoginView(props) {
           const data = response.data;
           props.onLoggedIn(data);
           props.setUser(data);
+          loggedNotify();
         })
         .catch((e) => {
           console.log('no such user');
         });
     }
-    return notify();
   };
 
   return (
@@ -86,7 +102,7 @@ function LoginView(props) {
                     onChange={(e) => setUsername(e.target.value)}
                     placeholder="Your username"
                   />
-                  {usernameErr && <p>{usernameErr}</p>}
+                  {usernameErr && <p className="error_msg">{usernameErr}</p>}
                 </Form.Group>
 
                 <Form.Group controlId="formPassword">
@@ -97,7 +113,7 @@ function LoginView(props) {
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="Your password"
                   />
-                  {passwordErr && <p>{passwordErr}</p>}
+                  {passwordErr && <p className="error_msg">{passwordErr}</p>}
                 </Form.Group>
 
                 <Button
