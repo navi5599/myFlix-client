@@ -18,32 +18,57 @@ function RegistrationView(props) {
   const [passwordErr, setPasswordErr] = useState('');
   const [emailErr, setEmailErr] = useState('');
 
-  const validate = () => {
-    let isReq = true;
+  let isReq = true;
+
+  const validateName = () => {
     if (!name) {
       setNameErr('Name is Required');
       isReq = false;
     } else if (name.length < 5) {
       setNameErr('Name must be at least 5 characters long');
       isReq = false;
-    } else if (username.length < 1) {
+    } else {
+      setNameErr('');
+    }
+  };
+
+  const validateUsername = () => {
+    console.log(isReq);
+    if (!username) {
       setUsernameErr('Username required');
       isReq = false;
+    } else {
+      setUsernameErr('');
     }
+  };
+
+  const validatePassword = () => {
     if (!password) {
       setPasswordErr('Password Required');
       isReq = false;
     } else if (password.length < 6) {
       setPasswordErr('Password must be 6 characters long');
       isReq = false;
-    } else if (email.indexOf('@') == -1) {
-      setEmailErr('Enter valid email');
-      isReq = false;
+    } else {
+      setPasswordErr('');
     }
-
-    return isReq;
   };
 
+  const validateEmail = () => {
+    if (email.indexOf('@') == -1) {
+      setEmailErr('Enter valid email');
+      isReq = false;
+    } else {
+      setEmailErr('');
+    }
+  };
+  const validate = () => {
+    validateName();
+    validateUsername();
+    validatePassword();
+    validateEmail();
+  };
+  //Toast popup on succesfull registration
   const notify = () =>
     toast.success('Registration successful.Please Log in!', {
       position: 'top-center',
@@ -58,7 +83,8 @@ function RegistrationView(props) {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    const isReq = validate();
+    validate();
+
     if (isReq) {
       axios
         .post('https://my-flix-app-1910.herokuapp.com/users', {

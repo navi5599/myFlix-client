@@ -18,39 +18,61 @@ function UpdateView(props) {
   const [passwordErr, setPasswordErr] = useState('');
   const [emailErr, setEmailErr] = useState('');
 
-  const validate = () => {
-    let isReq = true;
+  let isReq = true;
+
+  const validateName = () => {
     if (!name) {
       setNameErr('Name is Required');
       isReq = false;
     } else if (name.length < 5) {
-      setNameErr('Enter your full name');
+      setNameErr('Name must be at least 5 characters long');
       isReq = false;
-    } else if (!username) {
+    } else {
+      setNameErr('');
+    }
+  };
+
+  const validateUsername = () => {
+    console.log(isReq);
+    if (!username) {
       setUsernameErr('Username required');
       isReq = false;
-    } else if (username.length < 2) {
-      setUsernameErr('Username must be 2 characters long');
-      isReq = false;
+    } else {
+      setUsernameErr('');
     }
+  };
+
+  const validatePassword = () => {
     if (!password) {
       setPasswordErr('Password Required');
       isReq = false;
     } else if (password.length < 6) {
       setPasswordErr('Password must be 6 characters long');
       isReq = false;
-    } else if (email.indexOf('@') !== -1) {
+    } else {
+      setPasswordErr('');
+    }
+  };
+
+  const validateEmail = () => {
+    if (email.indexOf('@') == -1) {
       setEmailErr('Enter valid email');
       isReq = false;
+    } else {
+      setEmailErr('');
     }
-
-    return isReq;
+  };
+  const validate = () => {
+    validateName();
+    validateUsername();
+    validatePassword();
+    validateEmail();
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    const isReq = validate();
+    validate();
     const notify = () =>
       toast.success('Update successful.Please Log in!', {
         position: 'top-center',
